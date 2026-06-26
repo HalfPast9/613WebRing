@@ -1,0 +1,189 @@
+---
+import type { RingMember } from "../lib/members";
+
+interface Props {
+  member: RingMember;
+}
+const { member } = Astro.props;
+
+// Deterministic monogram colour (Ottawa-flavoured palette) when no avatar.
+const palette = [
+  "#d92f2f",
+  "#1f6f8b",
+  "#3f8060",
+  "#e35d8a",
+  "#e0a83d",
+  "#7a5cc4",
+];
+const hash = [...member.name].reduce((a, c) => a + c.charCodeAt(0), 0);
+const swatch = palette[hash % palette.length];
+const initials = member.name
+  .replace(/\(.*?\)/g, "")
+  .trim()
+  .split(/\s+/)
+  .slice(0, 2)
+  .map((w) => w[0]?.toUpperCase() ?? "")
+  .join("");
+---
+
+<a
+  class="member-card card"
+  href={member.website}
+  target="_blank"
+  rel="noopener noreferrer"
+  data-id={member.id}
+  data-search={[member.name, member.role, member.domain, ...(member.tags ?? [])]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()}
+  data-tags={(member.tags ?? []).join(",")}
+>
+  <div class="mc-head">
+    {
+      member.avatar ? (
+        <img
+          class="mc-avatar"
+          src={member.avatar}
+          alt=""
+          loading="lazy"
+          width="48"
+          height="48"
+        />
+      ) : (
+        <span
+          class="mc-avatar mc-monogram"
+          style={`--swatch:${swatch}`}
+          aria-hidden="true"
+        >
+          {initials || "·"}
+        </span>
+      )
+    }
+    <div class="mc-id">
+      <span class="mc-name">{member.name}</span>
+      {member.role && <span class="mc-role">{member.role}</span>}
+    </div>
+  </div>
+
+  {member.blurb && <p class="mc-blurb">{member.blurb}</p>}
+
+  <div class="mc-foot">
+    <span class="mc-domain">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      {member.domain}
+    </span>
+    {
+      member.tags && member.tags.length > 0 && (
+        <span class="mc-tags">
+          {member.tags.slice(0, 3).map((t) => (
+            <span class="tag">{t}</span>
+          ))}
+        </span>
+      )
+    }
+  </div>
+</a>
+
+<style>
+  .member-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.25rem;
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      transform 0.2s var(--ease),
+      box-shadow 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+  .member-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+  .mc-head {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .mc-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+  .mc-monogram {
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    background: var(--swatch);
+    border: none;
+  }
+  .mc-id {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .mc-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+  .mc-role {
+    color: var(--text-subtle);
+    font-size: 0.85rem;
+    margin-top: 0.1rem;
+  }
+  .mc-blurb {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .mc-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 0.4rem;
+  }
+  .mc-domain {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .member-card:hover .mc-domain {
+    color: var(--accent);
+  }
+  .mc-tags {
+    display: inline-flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+</style>

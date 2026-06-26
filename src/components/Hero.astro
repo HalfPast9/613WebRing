@@ -1,0 +1,140 @@
+---
+import RingViz from "./RingViz.astro";
+import { memberCount } from "../lib/members";
+import { BCO } from "../consts";
+---
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <span class="dot" aria-hidden="true"></span>
+        Presented by {BCO.name}
+      </p>
+
+      <h1 class="hero-title">
+        <span class="hero-613 text-gradient">613</span>
+        <span class="hero-word">Webring</span>
+      </h1>
+
+      <p class="hero-lead lead">
+        A ring of personal sites from the software engineers, designers and
+        budding coders building in Ottawa. Hop from one to the next — or add
+        your own and join the loop.
+      </p>
+
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="/join">Join the ring →</a>
+        <a class="btn" href="#members">Browse members</a>
+      </div>
+
+      <dl class="hero-stats">
+        <div class="stat">
+          <dt>In the ring</dt>
+          <dd><span class="num">{memberCount}</span> sites</dd>
+        </div>
+        <div class="stat">
+          <dt>Open to</dt>
+          <dd>all of the <span class="mono">613</span></dd>
+        </div>
+        <div class="stat">
+          <dt>Grows by</dt>
+          <dd>1 pull request</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="hero-viz">
+      <RingViz />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(2rem, 6vw, 4.5rem);
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  .eyebrow .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .hero-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 0.9rem;
+    font-size: clamp(3rem, 11vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+  }
+  .hero-613 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  .hero-word {
+    font-weight: 600;
+  }
+  .hero-lead {
+    margin-top: 1.3rem;
+    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.8rem;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2.4rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+  .stat dd {
+    margin-top: 0.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--text);
+  }
+  .stat .num {
+    color: var(--accent);
+  }
+  .mono {
+    font-family: var(--font-mono);
+    color: var(--accent);
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-viz {
+      order: -1;
+      max-width: 440px;
+      margin-inline: auto;
+    }
+  }
+</style>

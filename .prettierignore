@@ -1,0 +1,9 @@
+dist/
+node_modules/
+.astro/
+package-lock.json
+public/widget.js
+
+# Contributor-edited data — validated by the build's schema, not by formatting,
+# so a first PR never fails over a stray space or newline.
+src/data/members.json

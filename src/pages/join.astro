@@ -1,0 +1,374 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EmbedSnippet from "../components/EmbedSnippet.astro";
+import OttawaSkyline from "../components/OttawaSkyline.astro";
+import { REPO_URL, REPO_EDIT_MEMBERS_URL, REPO_NEW_PR_URL } from "../consts";
+
+const entryExample = `{
+  "name": "Ada Lovelace",
+  "website": "https://ada.dev",
+  "role": "Founder · ByWard Market",
+  "location": "Ottawa, ON",
+  "tags": ["frontend", "ai"],
+  "blurb": "Building developer tools in the 613."
+}`;
+
+const fields = [
+  { name: "name", req: true, desc: "Your name or handle." },
+  {
+    name: "website",
+    req: true,
+    desc: "Full URL to your personal site (https://…).",
+  },
+  {
+    name: "role",
+    req: false,
+    desc: 'Title or affiliation, e.g. "SWE @ Shopify".',
+  },
+  {
+    name: "location",
+    req: false,
+    desc: 'Ottawa neighbourhood or "Ottawa, ON".',
+  },
+  {
+    name: "tags",
+    req: false,
+    desc: "Up to 10 keywords — your stack, interests.",
+  },
+  { name: "blurb", req: false, desc: "One short line about what you build." },
+  { name: "avatar", req: false, desc: "URL to a square image (optional)." },
+];
+
+const faqs = [
+  {
+    q: "Do I have to live in Ottawa?",
+    a: "If you build software in or around the 613 — living here, studying here, working here, or repping the city from afar — you belong on the ring. We keep it friendly and low-gatekeeping.",
+  },
+  {
+    q: "I'm a student / just starting out. Can I join?",
+    a: "Yes! Budding coders are exactly who this is for. A simple personal page or portfolio is perfect. Opening this pull request might even be your first ever — we'd be honoured.",
+  },
+  {
+    q: "Does it cost anything?",
+    a: "Nope. The ring is free and open source, presented by Builders Collective Ottawa.",
+  },
+  {
+    q: "How do I leave the ring?",
+    a: "Open a pull request removing your entry from members.json, or message a maintainer. No hard feelings.",
+  },
+];
+---
+
+<BaseLayout
+  title="Join"
+  description="Add your personal site to the 613 Webring in one pull request. Open to every software engineer, designer and budding coder building in Ottawa."
+>
+  <section class="join-hero">
+    <OttawaSkyline class="join-skyline" />
+    <div class="container join-hero-inner">
+      <p class="eyebrow">
+        <span class="dot" aria-hidden="true"></span> Join the ring
+      </p>
+      <h1 class="join-title">
+        Add your site to the <span class="text-gradient">613</span>
+      </h1>
+      <p class="lead">
+        Three small steps and a single pull request. No build tools, no accounts
+        — if you can edit a text file, you can join the ring.
+      </p>
+    </div>
+  </section>
+
+  <div class="container join-body">
+    <!-- Step 1 -->
+    <section class="step">
+      <div class="step-marker"><span>1</span></div>
+      <div class="step-content">
+        <h2>Add your entry to <code>members.json</code></h2>
+        <p>
+          Append an object to the end of the array in
+          <code>src/data/members.json</code>. Only <strong>name</strong> and
+          <strong>website</strong> are required — everything else is optional.
+        </p>
+        <pre class="code-card"><code>{entryExample}</code></pre>
+
+        <div class="fields">
+          {
+            fields.map((f) => (
+              <div class="field-row">
+                <code class="field-name">
+                  {f.name}
+                  {f.req ? (
+                    <span class="req">required</span>
+                  ) : (
+                    <span class="opt">optional</span>
+                  )}
+                </code>
+                <span class="field-desc">{f.desc}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <a
+          class="btn"
+          href={REPO_EDIT_MEMBERS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Edit members.json on GitHub →
+        </a>
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="step">
+      <div class="step-marker"><span>2</span></div>
+      <div class="step-content">
+        <h2>Drop the widget on your site</h2>
+        <p>
+          Add one of these to your site's footer so visitors can hop to your
+          neighbours in the ring. This is what makes it a <em>ring</em> — please add
+          it before your entry is merged.
+        </p>
+        <EmbedSnippet />
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="step">
+      <div class="step-marker"><span>3</span></div>
+      <div class="step-content">
+        <h2>Open your pull request</h2>
+        <p>
+          Commit your change and open a PR. A maintainer reviews it (automated
+          checks make sure your entry is valid), and once merged you're live on
+          the ring. Welcome to the loop. 🌷
+        </p>
+        <div class="step-cta">
+          <a
+            class="btn btn-primary"
+            href={REPO_NEW_PR_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open a pull request →
+          </a>
+          <a
+            class="btn"
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read CONTRIBUTING.md
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+      <h2 class="section-title">Questions</h2>
+      <div class="faq-list">
+        {
+          faqs.map((item) => (
+            <details class="faq-item">
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .join-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(2.5rem, 7vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+    border-bottom: 1px solid var(--border);
+  }
+  .join-skyline {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 120px;
+    width: 100%;
+    color: var(--border-strong);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .join-hero-inner {
+    position: relative;
+  }
+  .eyebrow .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .join-title {
+    margin: 0.8rem 0 1rem;
+    font-size: clamp(2.2rem, 7vw, 3.6rem);
+  }
+  .join-body {
+    max-width: 760px;
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.4rem;
+    padding-bottom: 3rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+  .step:not(:last-of-type)::after {
+    content: "";
+    position: absolute;
+    left: 23px;
+    top: 56px;
+    bottom: 1.5rem;
+    width: 2px;
+    background: linear-gradient(var(--border-strong), transparent);
+  }
+  .step-marker span {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.3rem;
+    box-shadow: var(--shadow-md);
+  }
+  .step-content h2 {
+    font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+    margin-bottom: 0.5rem;
+  }
+  .step-content > p {
+    color: var(--text-muted);
+    margin-bottom: 1.1rem;
+  }
+  .code-card {
+    margin: 0 0 1.3rem;
+    padding: 1.1rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.05em 0.4em;
+  }
+  .code-card code {
+    background: none;
+    border: none;
+    padding: 0;
+    white-space: pre;
+  }
+  .fields {
+    display: grid;
+    gap: 0.55rem;
+    margin-bottom: 1.4rem;
+  }
+  .field-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.9rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px dashed var(--border);
+  }
+  .field-name {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--accent);
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .req,
+  .opt {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.1em 0.5em;
+    border-radius: 999px;
+  }
+  .req {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .opt {
+    background: var(--surface-2);
+    color: var(--text-subtle);
+    border: 1px solid var(--border);
+  }
+  .field-desc {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .step-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+  .faq {
+    margin-top: 1.5rem;
+  }
+  .faq .section-title {
+    margin-bottom: 1.2rem;
+  }
+  .faq-list {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.4rem 1.1rem;
+  }
+  .faq-item summary {
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-weight: 600;
+    padding: 0.7rem 0;
+    list-style-position: inside;
+  }
+  .faq-item summary:hover {
+    color: var(--accent);
+  }
+  .faq-item p {
+    color: var(--text-muted);
+    padding: 0 0 0.9rem;
+    margin: 0;
+  }
+  @media (max-width: 560px) {
+    .step {
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
+    .step::after {
+      display: none;
+    }
+  }
+</style>

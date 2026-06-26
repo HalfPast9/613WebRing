@@ -1,0 +1,152 @@
+---
+import { SITE_URL } from "../consts";
+
+const scriptSnippet = `<!-- 613 Webring -->
+<div id="webring-613"></div>
+<script src="${SITE_URL}/widget.js" defer></script>`;
+
+const htmlSnippet = `<!-- 613 Webring (no-JS version) -->
+<nav class="webring-613" aria-label="613 Webring">
+  <a href="${SITE_URL}/nav?dir=prev&site=https://your-site.com">&larr; prev</a>
+  <a href="${SITE_URL}">613 Webring</a>
+  <a href="${SITE_URL}/nav?dir=next&site=https://your-site.com">next &rarr;</a>
+</nav>`;
+---
+
+<div class="embed">
+  <div class="embed-block">
+    <div class="embed-head">
+      <span class="embed-label">Recommended · auto widget</span>
+      <button class="copy-btn" type="button" data-copy aria-label="Copy snippet"
+        >Copy</button
+      >
+    </div>
+    <pre class="embed-code"><code>{scriptSnippet}</code></pre>
+    <p class="embed-note">
+      Paste into your footer. The widget renders the ring controls and points
+      back here automatically — no configuration needed.
+    </p>
+  </div>
+
+  <div class="embed-block">
+    <div class="embed-head">
+      <span class="embed-label">No-JavaScript alternative</span>
+      <button class="copy-btn" type="button" data-copy aria-label="Copy snippet"
+        >Copy</button
+      >
+    </div>
+    <pre class="embed-code"><code>{htmlSnippet}</code></pre>
+    <p class="embed-note">
+      Prefer plain HTML? Use this and replace <code>https://your-site.com</code>
+      with your own URL in both links.
+    </p>
+  </div>
+</div>
+
+<style>
+  .embed {
+    display: grid;
+    gap: 1.2rem;
+  }
+  .embed-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .embed-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0.8rem 0.6rem 1rem;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .embed-label {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+  .copy-btn {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition:
+      border-color 0.15s var(--ease),
+      color 0.15s var(--ease);
+  }
+  .copy-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .copy-btn.copied {
+    border-color: var(--parliament-copper);
+    color: var(--parliament-copper);
+  }
+  .embed-code {
+    margin: 0;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .embed-code code {
+    font-family: inherit;
+    white-space: pre;
+  }
+  .embed-note {
+    padding: 0 1.1rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+  .embed-note code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0.05em 0.35em;
+  }
+</style>
+
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>(".copy-btn[data-copy]")
+    .forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const code = btn.closest(".embed-block")?.querySelector("code");
+        const text = code?.textContent ?? "";
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
+          btn.textContent = "Copied!";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = original;
+            btn.classList.remove("copied");
+          }, 1600);
+        } catch {
+          // Clipboard blocked — select the text as a fallback.
+          const range = document.createRange();
+          if (code) {
+            range.selectNodeContents(code);
+            const sel = window.getSelection();
+            sel?.removeAllRanges();
+            sel?.addRange(range);
+          }
+        }
+      });
+    });
+</script>
