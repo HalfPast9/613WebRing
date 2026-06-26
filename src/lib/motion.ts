@@ -135,7 +135,10 @@ function manifesto() {
     stagger: 0.5,
     scrollTrigger: {
       trigger: block,
-      start: "top top",
+      // Pin from the heading's center so the text is fully on screen and
+      // dead-centred for the entire word reveal (not scrolled to the top
+      // with half of it already off the viewport).
+      start: "center center",
       end: "+=180%",
       pin: true,
       scrub: 0.6,

@@ -72,7 +72,7 @@
 
       cols = Math.ceil(w / FONT);
       drops = new Array(cols).fill(0).map(() => rand(-40, 0)); // start above the fold, staggered
-      speeds = new Array(cols).fill(0).map(() => rand(0.45, 0.95));
+      speeds = new Array(cols).fill(0).map(() => rand(0.06, 0.16));
       // Clear to the page colour so the first frame isn't a flash.
       ctx.fillStyle = "#050505";
       ctx.fillRect(0, 0, w, h);
@@ -98,7 +98,7 @@
           ctx.fillText(glyph(), x, y);
         }
 
-        drops[i] += speeds[i] * (1 + boost);
+        drops[i] += speeds[i] * (1 + boost * 0.3);
         if (y > h && Math.random() > 0.975) drops[i] = rand(-20, 0);
       }
     }
