@@ -16,8 +16,8 @@ const year = new Date().getFullYear();
   <div class="container footer-inner">
     <div class="footer-brand">
       <a class="footer-mark" href="/" aria-label={`${SITE_NAME} — home`}>
-        <RingMark size={26} />
-        <span><span class="m">613</span> Webring</span>
+        <RingMark size={24} />
+        <span class="footer-wordmark"><span class="m">613</span>/WEBRING</span>
       </a>
       <p class="footer-tag">{SITE_TAGLINE}</p>
       <p class="footer-bco">
@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
   </div>
 
   <div class="container footer-bottom">
-    <span>© {year} {SITE_NAME}. Made with care for Ottawa's builders. 🌷</span>
+    <span>© {year} {SITE_NAME} · Builders Collective Ottawa</span>
     <span class="footer-area">Area code 613 · Ottawa, Ontario</span>
   </div>
 </footer>
@@ -60,7 +60,7 @@ const year = new Date().getFullYear();
 <style>
   .footer {
     position: relative;
-    margin-top: 4rem;
+    margin-top: 2rem;
     padding-top: 3.5rem;
     background: var(--bg-subtle);
     border-top: 1px solid var(--border);
@@ -71,8 +71,8 @@ const year = new Date().getFullYear();
     inset: auto 0 0 0;
     width: 100%;
     height: 130px;
-    color: var(--border-strong);
-    opacity: 0.4;
+    color: var(--text);
+    opacity: 0.05;
     pointer-events: none;
   }
   .footer-inner {
@@ -85,24 +85,26 @@ const year = new Date().getFullYear();
   .footer-mark {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.5rem;
     color: var(--text);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.15rem;
   }
   .footer-mark :global(svg) {
-    color: var(--accent);
+    color: #eef2f7;
   }
   .footer-mark:hover {
     text-decoration: none;
   }
-  .m {
+  .footer-wordmark {
     font-family: var(--font-mono);
-    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+  }
+  .m {
+    color: #fff;
   }
   .footer-tag {
-    margin-top: 0.7rem;
+    margin-top: 0.8rem;
     color: var(--text-muted);
     max-width: 34ch;
   }
@@ -111,6 +113,12 @@ const year = new Date().getFullYear();
     color: var(--text-subtle);
     font-size: 0.9rem;
   }
+  .footer-bco a {
+    color: var(--text-muted);
+  }
+  .footer-bco a:hover {
+    color: var(--blue);
+  }
   .footer-links {
     display: flex;
     flex-direction: column;
@@ -118,9 +126,9 @@ const year = new Date().getFullYear();
   }
   .footer-links-title {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     color: var(--text-subtle);
     margin-bottom: 0.2rem;
   }
@@ -129,7 +137,7 @@ const year = new Date().getFullYear();
     font-size: 0.95rem;
   }
   .footer-links a:hover {
-    color: var(--accent);
+    color: var(--blue);
   }
   .footer-bottom {
     position: relative;
@@ -140,9 +148,7 @@ const year = new Date().getFullYear();
     padding-block: 1.4rem;
     border-top: 1px solid var(--border);
     color: var(--text-subtle);
-    font-size: 0.85rem;
-  }
-  .footer-area {
+    font-size: 0.82rem;
     font-family: var(--font-mono);
   }
   @media (max-width: 720px) {

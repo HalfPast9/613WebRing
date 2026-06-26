@@ -1,130 +1,202 @@
 ---
-import RingViz from "./RingViz.astro";
+import AsteriskChrome from "./AsteriskChrome.astro";
 import { memberCount } from "../lib/members";
 import { BCO } from "../consts";
+const year = new Date().getFullYear();
 ---
 
 <section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow">
-        <span class="dot" aria-hidden="true"></span>
-        Presented by {BCO.name}
-      </p>
+  <div class="container">
+    <!-- editorial header rule -->
+    <div class="hero-rule">
+      <span class="label">{BCO.name} // Ottawa</span>
+      <span class="label hero-rule-end">Vol. 01 // Est. {year}</span>
+    </div>
 
-      <h1 class="hero-title">
-        <span class="hero-613 text-gradient">613</span>
-        <span class="hero-word">Webring</span>
-      </h1>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="hero-kicker label">
+          <span class="dot" aria-hidden="true"></span>
+          The 613 Webring
+        </p>
 
-      <p class="hero-lead lead">
-        A ring of personal sites from the software engineers, designers and
-        budding coders building in Ottawa. Hop from one to the next — or add
-        your own and join the loop.
-      </p>
+        <h1 class="hero-title" data-reveal-stagger>
+          <span class="hl-line">Ottawa's builders,</span>
+          <span class="hl-line"
+            >linked in a <span class="chrome-text">ring.</span></span
+          >
+        </h1>
 
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="/join">Join the ring →</a>
-        <a class="btn" href="#members">Browse members</a>
+        <p class="hero-lead lead" data-reveal>
+          A ring of personal sites from the engineers, designers and budding
+          coders shipping out of the 613. Hop from one to the next — or add your
+          own and join the loop.
+        </p>
+
+        <div class="hero-cta" data-reveal>
+          <a class="btn btn-primary" href="/join">Join the ring →</a>
+          <a class="btn" href="#members">Browse members</a>
+        </div>
+
+        <dl class="hero-stats" data-reveal-stagger>
+          <div class="stat">
+            <dt>In the ring</dt>
+            <dd><span class="num">{memberCount}</span> sites</dd>
+          </div>
+          <div class="stat">
+            <dt>Open to</dt>
+            <dd>all of the <span class="num">613</span></dd>
+          </div>
+          <div class="stat">
+            <dt>Grows by</dt>
+            <dd>1 pull request</dd>
+          </div>
+        </dl>
       </div>
 
-      <dl class="hero-stats">
-        <div class="stat">
-          <dt>In the ring</dt>
-          <dd><span class="num">{memberCount}</span> sites</dd>
-        </div>
-        <div class="stat">
-          <dt>Open to</dt>
-          <dd>all of the <span class="mono">613</span></dd>
-        </div>
-        <div class="stat">
-          <dt>Grows by</dt>
-          <dd>1 pull request</dd>
-        </div>
-      </dl>
-    </div>
-
-    <div class="hero-viz">
-      <RingViz />
+      <div class="hero-viz">
+        <AsteriskChrome parallax={0.4} />
+      </div>
     </div>
   </div>
+
+  <a class="hero-scroll" href="#manifesto" aria-label="Scroll to learn more">
+    <span class="label">Scroll</span>
+    <span class="hero-scroll-line" aria-hidden="true"></span>
+  </a>
 </section>
 
 <style>
   .hero {
     position: relative;
-    padding-top: clamp(2rem, 6vw, 4.5rem);
-    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 5rem;
+    padding-bottom: 4rem;
     overflow: hidden;
   }
+  .hero-rule {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: clamp(1.5rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-rule-end {
+    color: var(--text-subtle);
+  }
+  @media (max-width: 560px) {
+    .hero-rule-end {
+      display: none;
+    }
+  }
+
   .hero-grid {
     display: grid;
     grid-template-columns: 1.05fr 0.95fr;
     gap: clamp(1.5rem, 4vw, 3.5rem);
     align-items: center;
   }
-  .eyebrow .dot {
-    width: 8px;
-    height: 8px;
+  .hero-kicker {
+    color: var(--text-muted);
+  }
+  .hero-kicker .dot {
+    width: 7px;
+    height: 7px;
     border-radius: 999px;
-    background: var(--accent);
+    background: var(--blue);
     box-shadow: 0 0 0 4px var(--accent-soft);
   }
+
   .hero-title {
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    margin-top: 0.9rem;
-    font-size: clamp(3rem, 11vw, 6.5rem);
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-  }
-  .hero-613 {
-    font-family: var(--font-mono);
-    font-weight: 700;
-  }
-  .hero-word {
+    margin-top: 1rem;
+    font-family: var(--font-display);
     font-weight: 600;
+    font-size: clamp(2.6rem, 7.5vw, 5.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+  }
+  .hl-line {
+    display: block;
   }
   .hero-lead {
-    margin-top: 1.3rem;
+    margin-top: 1.5rem;
     font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    max-width: 46ch;
   }
   .hero-cta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 1.8rem;
+    margin-top: 2rem;
   }
   .hero-stats {
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
-    margin-top: 2.4rem;
+    gap: 2.4rem;
+    margin-top: 2.6rem;
     padding-top: 1.6rem;
     border-top: 1px solid var(--border);
   }
   .stat dt {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-subtle);
   }
   .stat dd {
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 1.15rem;
     color: var(--text);
   }
   .stat .num {
-    color: var(--accent);
-  }
-  .mono {
     font-family: var(--font-mono);
-    color: var(--accent);
+    color: #fff;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-subtle);
+  }
+  .hero-scroll:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 38px;
+    background: linear-gradient(var(--text-subtle), transparent);
+    animation: scroll-pulse 2.2s var(--ease) infinite;
+    transform-origin: top;
+  }
+  @keyframes scroll-pulse {
+    0%,
+    100% {
+      transform: scaleY(0.4);
+      opacity: 0.4;
+    }
+    50% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scroll-line {
+      animation: none;
+    }
   }
 
   @media (max-width: 900px) {
@@ -133,8 +205,11 @@ import { BCO } from "../consts";
     }
     .hero-viz {
       order: -1;
-      max-width: 440px;
+      max-width: 360px;
       margin-inline: auto;
+    }
+    .hero-scroll {
+      display: none;
     }
   }
 </style>
