@@ -1,0 +1,221 @@
+---
+import { members, memberCount } from "../lib/members";
+
+// Keep the visualisation readable: if the ring grows large, sample evenly so
+// the circle never gets crowded. Everyone still appears in the directory below.
+const MAX_NODES = 36;
+const shown =
+  members.length <= MAX_NODES
+    ? members
+    : members.filter((_, i) => i % Math.ceil(members.length / MAX_NODES) === 0);
+
+const cx = 200;
+const cy = 200;
+const r = 150;
+const nodes = shown.map((m, i) => {
+  const angle = (2 * Math.PI * i) / shown.length - Math.PI / 2;
+  return {
+    ...m,
+    x: cx + r * Math.cos(angle),
+    y: cy + r * Math.sin(angle),
+  };
+});
+---
+
+<div class="ringviz" data-count={memberCount}>
+  <svg viewBox="0 0 400 400" class="ringviz-svg" role="presentation">
+    <!-- decorative rotating dashed ring -->
+    <circle
+      class="spin-ring"
+      cx={cx}
+      cy={cy}
+      r="178"
+      fill="none"
+      stroke="var(--node-line)"
+      stroke-width="1.5"
+      stroke-dasharray="2 10"
+      aria-hidden="true"></circle>
+    <!-- the ring the nodes sit on -->
+    <circle
+      cx={cx}
+      cy={cy}
+      r={r}
+      fill="none"
+      stroke="var(--border-strong)"
+      stroke-width="2"
+      aria-hidden="true"></circle>
+
+    {
+      nodes.map((n) => (
+        <a
+          href={n.website}
+          class="node"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-name={n.name}
+          data-domain={n.domain}
+          data-role={n.role ?? ""}
+          aria-label={`${n.name} — ${n.domain}`}
+        >
+          <circle class="node-halo" cx={n.x} cy={n.y} r="18" />
+          <circle class="node-dot" cx={n.x} cy={n.y} r="10" />
+        </a>
+      ))
+    }
+  </svg>
+
+  <div class="ringviz-center" aria-hidden="true">
+    <div class="rc-default">
+      <span class="rc-count">{memberCount}</span>
+      <span class="rc-label">sites in the ring</span>
+      <span class="rc-hint">hover a node</span>
+    </div>
+    <div class="rc-hover" hidden>
+      <span class="rc-name"></span>
+      <span class="rc-domain mono"></span>
+      <span class="rc-role"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ringviz {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: 1;
+    margin-inline: auto;
+    filter: drop-shadow(0 20px 40px var(--ring-glow));
+  }
+  .ringviz-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .spin-ring {
+    transform-origin: 200px 200px;
+    animation: ringspin 60s linear infinite;
+  }
+  @keyframes ringspin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spin-ring {
+      animation: none;
+    }
+  }
+
+  .node {
+    cursor: pointer;
+  }
+  .node-dot {
+    fill: var(--node);
+    stroke: var(--surface);
+    stroke-width: 3;
+    transition:
+      r 0.2s var(--ease),
+      fill 0.2s var(--ease);
+  }
+  .node-halo {
+    fill: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s var(--ease);
+  }
+  .node:hover .node-dot,
+  .node:focus-visible .node-dot {
+    fill: var(--accent-hover);
+  }
+  .node:hover .node-halo,
+  .node:focus-visible .node-halo {
+    opacity: 0.18;
+  }
+  .node:focus-visible {
+    outline: none;
+  }
+
+  .ringviz-center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    pointer-events: none;
+  }
+  .ringviz-center > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    max-width: 56%;
+  }
+  .rc-count {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 9vw, 3rem);
+    color: var(--accent);
+    line-height: 1;
+  }
+  .rc-label {
+    font-family: var(--font-display);
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .rc-hint {
+    margin-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+  .rc-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .rc-domain {
+    font-size: 0.85rem;
+  }
+  .rc-role {
+    margin-top: 0.2rem;
+    font-size: 0.78rem;
+    color: var(--text-subtle);
+  }
+  [hidden] {
+    display: none !important;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".ringviz").forEach((viz) => {
+    const def = viz.querySelector<HTMLElement>(".rc-default");
+    const hov = viz.querySelector<HTMLElement>(".rc-hover");
+    const nameEl = viz.querySelector<HTMLElement>(".rc-name");
+    const domainEl = viz.querySelector<HTMLElement>(".rc-domain");
+    const roleEl = viz.querySelector<HTMLElement>(".rc-role");
+    if (!def || !hov || !nameEl || !domainEl || !roleEl) return;
+
+    const show = (node: HTMLElement) => {
+      nameEl.textContent = node.dataset.name ?? "";
+      domainEl.textContent = node.dataset.domain ?? "";
+      roleEl.textContent = node.dataset.role ?? "";
+      def.hidden = true;
+      hov.hidden = false;
+    };
+    const reset = () => {
+      def.hidden = false;
+      hov.hidden = true;
+    };
+
+    viz.querySelectorAll<HTMLElement>(".node").forEach((node) => {
+      node.addEventListener("mouseenter", () => show(node));
+      node.addEventListener("mouseleave", reset);
+      node.addEventListener("focus", () => show(node));
+      node.addEventListener("blur", reset);
+    });
+  });
+</script>

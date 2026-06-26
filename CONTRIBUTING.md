@@ -1,0 +1,126 @@
+# Contributing to the 613 Webring
+
+Welcome! 🌷 This ring is for **everyone building software in or around Ottawa** —
+students, founders, hobbyists, career-switchers, and people writing their very
+first lines of code. If that's you, we'd love to have your site on the ring.
+
+Opening this pull request might be your **first PR ever**. That's wonderful — we
+kept the process as gentle as possible, and we're happy to help in the comments.
+
+---
+
+## The short version
+
+1. Add yourself to [`src/data/members.json`](./src/data/members.json).
+2. Add the [widget](#step-2-add-the-widget-to-your-site) to your site's footer.
+3. [Open a pull request](#step-3-open-a-pull-request).
+
+That's it. Below is the same thing, slowly.
+
+---
+
+## Who can join?
+
+If you **build software in or around the 613** — living here, studying here,
+working here, or repping Ottawa from afar — you belong. We keep it friendly and
+low-gatekeeping. A simple personal page, portfolio, blog, or "link in bio" site
+is perfectly fine.
+
+## Step 1: Add yourself to `members.json`
+
+Open [`src/data/members.json`](./src/data/members.json) and add an object to the
+**end of the array**. Adding to the end keeps merge conflicts rare.
+
+```jsonc
+{
+  "name": "Ada Lovelace",
+  "website": "https://ada.dev",
+  "role": "Founder · ByWard Market",
+  "location": "Ottawa, ON",
+  "tags": ["frontend", "ai"],
+  "blurb": "Building developer tools in the 613.",
+}
+```
+
+### Fields
+
+| Field      | Required | Notes                                                           |
+| ---------- | :------: | --------------------------------------------------------------- |
+| `name`     |    ✅    | Your name or handle (max 80 chars).                             |
+| `website`  |    ✅    | Full URL to your personal site, starting with `https://`.       |
+| `role`     |    —     | Title or affiliation, e.g. `"SWE @ Shopify"` (max 100 chars).   |
+| `location` |    —     | Ottawa neighbourhood or `"Ottawa, ON"` (max 60 chars).          |
+| `tags`     |    —     | Up to 10 short keywords — your stack, interests.                |
+| `blurb`    |    —     | One short line about what you build (max 200 chars).            |
+| `avatar`   |    —     | URL to a square image. If omitted, we generate a tidy monogram. |
+
+> **Tip:** Don't forget the comma after the previous entry, and make sure your
+> JSON is valid. The build checks this for you — see below.
+
+### The example entries
+
+The repo ships with a few `(example entry)` placeholders so the ring isn't empty.
+Maintainers will remove them as real builders join — you don't need to touch them.
+
+## Step 2: Add the widget to your site
+
+So the ring is actually a _ring_, add the navigation widget to your site's
+footer. Pick one:
+
+**Recommended — auto widget** (renders prev / random / next controls):
+
+```html
+<!-- 613 Webring -->
+<div id="webring-613"></div>
+<script src="https://613webring.xyz/widget.js" defer></script>
+```
+
+**No-JavaScript alternative** (replace `https://your-site.com` with your URL):
+
+```html
+<!-- 613 Webring -->
+<nav class="webring-613" aria-label="613 Webring">
+  <a href="https://613webring.xyz/nav?dir=prev&site=https://your-site.com"
+    >← prev</a
+  >
+  <a href="https://613webring.xyz">613 Webring</a>
+  <a href="https://613webring.xyz/nav?dir=next&site=https://your-site.com"
+    >next →</a
+  >
+</nav>
+```
+
+Please add the widget **before** your entry is merged. It's what keeps the loop
+connected for everyone.
+
+## Step 3: Open a pull request
+
+- Fork the repo (or use GitHub's web editor — the ✏️ on `members.json`).
+- Commit your change with a message like `Add Ada Lovelace to the ring`.
+- Open a pull request and fill in the short checklist in the template.
+
+Automated checks run `npm run build`, which **validates your entry against the
+schema**. If something's off (a missing field, an invalid URL, broken JSON), the
+check fails with a message pointing at the problem. Fix it and push again, or ask
+for help — we're glad to assist.
+
+Once it's merged, you're on the ring. Welcome to the loop. 🎉
+
+## Running it locally (optional)
+
+You don't need to, but if you'd like to preview your card:
+
+```bash
+npm install
+npm run dev   # http://localhost:4321
+```
+
+## Leaving the ring
+
+Open a pull request removing your entry from `members.json`, or message a
+maintainer. No hard feelings — the door's always open to come back.
+
+---
+
+By participating you agree to our [Code of Conduct](./CODE_OF_CONDUCT.md).
+Thanks for helping connect Ottawa's builders. ❤️

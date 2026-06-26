@@ -1,0 +1,147 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import RingMark from "../components/RingMark.astro";
+import { members } from "../lib/members";
+
+// The ordered ring, inlined for the client redirect logic.
+const navList = members.map((m) => ({ origin: m.origin, website: m.website }));
+---
+
+<BaseLayout title="Hopping around the ring" noindex bare>
+  <script is:inline define:vars={{ navList }}>
+    // Resolve the prev / next / random hop as early as possible.
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var dir = (params.get("dir") || "next").toLowerCase();
+      var site = params.get("site") || document.referrer || "";
+
+      function originOf(u) {
+        try {
+          return new URL(u).origin;
+        } catch (e) {
+          return "";
+        }
+      }
+
+      var from = originOf(site);
+      var n = navList.length;
+      var i = -1;
+      for (var k = 0; k < n; k++) {
+        if (navList[k].origin === from) {
+          i = k;
+          break;
+        }
+      }
+
+      var target = null;
+      if (n > 0) {
+        if (dir === "random") {
+          var r = Math.floor(Math.random() * n);
+          if (n > 1 && i >= 0) {
+            while (r === i) r = Math.floor(Math.random() * n);
+          }
+          target = navList[r];
+        } else if (i >= 0) {
+          var step = dir === "prev" ? -1 : 1;
+          target = navList[(i + step + n) % n];
+        }
+      }
+
+      if (target && target.website) {
+        location.replace(target.website);
+      } else {
+        document.documentElement.setAttribute("data-webring-unknown", "true");
+      }
+    })();
+  </script>
+
+  <section class="nav-page">
+    <div class="nav-card">
+      <span class="nav-mark"><RingMark size={48} /></span>
+
+      <div class="when-redirecting">
+        <div class="spinner" aria-hidden="true"></div>
+        <h1>Hopping around the ring…</h1>
+        <p>Taking you to the next stop on the <strong>613 Webring</strong>.</p>
+      </div>
+
+      <div class="when-unknown">
+        <h1>This site isn't on the ring… yet</h1>
+        <p>
+          We couldn't find the site you came from in the <strong
+            >613 Webring</strong
+          >. If you build in Ottawa, you're one pull request away from joining.
+        </p>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn btn-primary" href="/">Visit the 613 Webring</a>
+        <a class="btn" href="/nav?dir=random">Surprise me 🎲</a>
+        <a class="btn" href="/join">Join the ring</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nav-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1.2rem;
+    text-align: center;
+  }
+  .nav-card {
+    max-width: 32rem;
+  }
+  .nav-mark {
+    display: inline-flex;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .nav-card h1 {
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    margin-bottom: 0.6rem;
+  }
+  .nav-card p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .nav-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+  }
+  .spinner {
+    width: 34px;
+    height: 34px;
+    margin: 0 auto 1.2rem;
+    border-radius: 50%;
+    border: 3px solid var(--border-strong);
+    border-top-color: var(--accent);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation: none;
+    }
+  }
+
+  /* Toggle the two states purely from the <html> flag the inline script sets,
+     so there's no flash and no second script needed. */
+  .when-unknown {
+    display: none;
+  }
+  :global(html[data-webring-unknown="true"]) .when-redirecting {
+    display: none;
+  }
+  :global(html[data-webring-unknown="true"]) .when-unknown {
+    display: block;
+  }
+</style>
