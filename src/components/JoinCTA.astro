@@ -1,15 +1,21 @@
 ---
-import OttawaSkyline from "./OttawaSkyline.astro";
 import RingMark from "./RingMark.astro";
 ---
 
 <section class="joincta-wrap section">
   <div class="container">
-    <div class="joincta">
-      <OttawaSkyline class="joincta-skyline" />
+    <div class="joincta grid-frame" data-reveal="fade">
+      <span class="joincta-watermark" aria-hidden="true">
+        <RingMark size={460} />
+      </span>
+
       <div class="joincta-inner">
-        <span class="joincta-mark"><RingMark size={42} /></span>
-        <h2 class="joincta-title">Build in Ottawa? Join the ring.</h2>
+        <p class="eyebrow">
+          <span class="dot" aria-hidden="true"></span> Join the ring
+        </p>
+        <h2 class="joincta-title">
+          Build in Ottawa? <span class="chrome-text">Join the ring.</span>
+        </h2>
         <p class="joincta-lead">
           Whether you're shipping at a startup, studying at uOttawa, Carleton or
           Algonquin, or writing your very first lines of code — there's a node
@@ -20,6 +26,11 @@ import RingMark from "./RingMark.astro";
           <a class="btn joincta-ghost" href="/#members">See who's in</a>
         </div>
       </div>
+
+      <div class="joincta-foot">
+        <span class="label">Carleton University · Ottawa, ON</span>
+        <span class="label joincta-foot-end">Build · Ship · Repeat</span>
+      </div>
     </div>
   </div>
 </section>
@@ -28,76 +39,71 @@ import RingMark from "./RingMark.astro";
   .joincta {
     position: relative;
     overflow: hidden;
+    border: 1px solid var(--border-strong);
     border-radius: var(--radius-lg);
-    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
-    text-align: center;
-    color: #fff;
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem) 0;
     background:
       radial-gradient(
-        120% 120% at 50% -20%,
-        rgba(255, 255, 255, 0.18),
-        transparent 60%
+        120% 130% at 78% -10%,
+        rgba(127, 178, 255, 0.18),
+        transparent 55%
       ),
-      linear-gradient(
-        135deg,
-        var(--bco-red-deep),
-        var(--bco-red) 45%,
-        var(--canal-blue-deep)
-      );
+      linear-gradient(180deg, var(--surface-2), var(--bg));
     box-shadow: var(--shadow-lg);
   }
-  .joincta-skyline {
+  .joincta-watermark {
     position: absolute;
-    inset: auto 0 0 0;
-    height: 120px;
-    width: 100%;
-    color: #fff;
-    opacity: 0.16;
+    top: 50%;
+    right: -6%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.04);
     pointer-events: none;
+    line-height: 0;
   }
   .joincta-inner {
     position: relative;
-    max-width: 56ch;
-    margin-inline: auto;
+    max-width: 52ch;
   }
-  .joincta-mark {
-    display: inline-flex;
-    color: #fff;
-    margin-bottom: 0.6rem;
+  .eyebrow .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--blue);
+    box-shadow: 0 0 0 4px var(--accent-soft);
   }
   .joincta-title {
-    color: #fff;
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-top: 0.8rem;
+    font-size: clamp(2rem, 5.5vw, 3.4rem);
+    letter-spacing: -0.03em;
   }
   .joincta-lead {
-    margin-top: 0.9rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: clamp(1rem, 2.3vw, 1.15rem);
+    margin-top: 1rem;
+    color: var(--text-muted);
+    font-size: clamp(1rem, 2.3vw, 1.18rem);
   }
   .joincta-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    justify-content: center;
-    margin-top: 1.8rem;
-  }
-  .joincta .btn-primary {
-    --btn-bg: #fff;
-    --btn-fg: var(--bco-red-deep);
-    --btn-bd: #fff;
-  }
-  .joincta .btn-primary:hover {
-    --btn-bg: #fff;
-    --btn-fg: var(--bco-red-deep);
-    --btn-bd: #fff;
+    margin-top: 2rem;
   }
   .joincta-ghost {
     --btn-bg: transparent;
-    --btn-fg: #fff;
-    --btn-bd: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(4px);
+    --btn-fg: var(--text);
+    --btn-bd: var(--border-strong);
   }
-  .joincta-ghost:hover {
-    --btn-bd: #fff;
+  .joincta-foot {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-block: 1.2rem;
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 520px) {
+    .joincta-foot-end {
+      display: none;
+    }
   }
 </style>
