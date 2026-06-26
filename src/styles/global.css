@@ -466,22 +466,6 @@ html.booting #boot-cover {
   background-clip: text;
   color: transparent;
 }
-.manifesto-widget {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 2.2rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.manifesto-widget span {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  color: var(--text);
-}
 @media (min-width: 901px) {
   .manifesto {
     height: 220vh;

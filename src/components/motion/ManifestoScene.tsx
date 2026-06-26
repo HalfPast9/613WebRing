@@ -11,7 +11,7 @@ import AsciiRing from "./AsciiRing";
 const PHRASES = [
   "Start anywhere.",
   "Keep clicking.",
-  "Tour every builder in the 613 —",
+  "Tour every builder in the 613",
   "and land right back where you began.",
 ];
 
@@ -103,22 +103,6 @@ function Line({
   );
 }
 
-function WidgetStep({
-  label,
-  range,
-  progress,
-  scrub,
-}: {
-  label: string;
-  range: [number, number, number, number];
-  progress: MotionValue<number>;
-  scrub: boolean;
-}) {
-  const opacity = useTransform(progress, range, [0.4, 1, 1, 0.4]);
-  if (!scrub) return <span>{label}</span>;
-  return <motion.span style={{ opacity }}>{label}</motion.span>;
-}
-
 /**
  * "How the ring works" — a pinned scene (CSS sticky) that reveals the statement
  * one beat at a time as you scroll (each fades out as the next arrives), beside a
@@ -166,26 +150,6 @@ export default function ManifestoScene() {
                 />
               ))}
             </h2>
-            <div className="manifesto-widget" aria-hidden="true">
-              <WidgetStep
-                label="← prev"
-                range={[0.18, 0.28, 0.46, 0.56]}
-                progress={scrollYProgress}
-                scrub={scrub}
-              />
-              <WidgetStep
-                label="613"
-                range={[0.42, 0.52, 0.7, 0.8]}
-                progress={scrollYProgress}
-                scrub={scrub}
-              />
-              <WidgetStep
-                label="next →"
-                range={[0.66, 0.76, 0.94, 1]}
-                progress={scrollYProgress}
-                scrub={scrub}
-              />
-            </div>
           </div>
         </div>
       </div>
