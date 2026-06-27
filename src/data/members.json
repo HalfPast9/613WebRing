@@ -30,5 +30,13 @@
     "location": "Ottawa, ON",
     "tags": ["example", "student"],
     "blurb": "👋 Sample entry — everyone building in the 613 is welcome here."
+  },
+  {
+    "name": "Qurb E Muhammad Syed",
+    "website": "https://kirbydoestech.dev",
+    "role": "Backend & systems · Carleton University",
+    "location": "Ottawa, ON",
+    "tags": ["backend", "systems", "java", "c++"],
+    "blurb": "Software engineering student building clean, performance-minded backend systems in the 613."
   }
 ]
