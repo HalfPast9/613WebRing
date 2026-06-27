@@ -7,8 +7,8 @@
  * is decided, change it in ONE place: right here.
  */
 
-// The production origin (no trailing slash). Placeholder until the domain is set.
-export const SITE_URL = "https://613webring.xyz";
+// The production origin (no trailing slash).
+export const SITE_URL = "https://613-web-ring.vercel.app";
 
 export const SITE_NAME = "613 Webring";
 export const SITE_TAGLINE =
