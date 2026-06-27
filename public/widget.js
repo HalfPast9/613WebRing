@@ -44,12 +44,22 @@
     return base + "/nav?dir=" + dir + "&site=" + encodeURIComponent(origin);
   }
 
+  /** Official BCO chrome mark — same asset as the site hero and favicon. */
+  function markImg() {
+    return (
+      '<img class="mark" src="' +
+      base +
+      '/bco-logo.png" width="22" height="22" alt="" decoding="async" />'
+    );
+  }
+
   function mount() {
     var host = document.createElement("div");
     host.className = "webring-613-host";
 
     var target =
-      (targetSel && document.querySelector(targetSel)) || document.getElementById("webring-613");
+      (targetSel && document.querySelector(targetSel)) ||
+      document.getElementById("webring-613");
     if (target) {
       target.appendChild(host);
     } else {
@@ -64,14 +74,17 @@
         window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-    var bg = dark ? "#171b22" : "#ffffff";
-    var fg = dark ? "#f3efe7" : "#1a1714";
-    var muted = dark ? "#aab1bd" : "#5c544b";
-    var border = dark ? "#333b48" : "#d4c7b2";
-    var accent = dark ? "#f2564f" : "#d92f2f";
+    var bg = dark ? "#111111" : "#ffffff";
+    var fg = dark ? "#f0f0f0" : "#080808";
+    var muted = dark ? "#9a9a9a" : "#666666";
+    var border = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.1)";
+    var hoverBg = dark ? "#1a1a1a" : "#f0f0f0";
+    var shadow = dark
+      ? "0 4px 20px rgba(0,0,0,0.45)"
+      : "0 4px 16px rgba(0,0,0,0.08)";
 
     var css =
-      ".wr{box-sizing:border-box;display:inline-flex;align-items:center;gap:.35rem;" +
+      ".wr{box-sizing:border-box;display:inline-flex;align-items:center;gap:.15rem;" +
       "font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;" +
       "background:" +
       bg +
@@ -79,45 +92,31 @@
       fg +
       ";border:1px solid " +
       border +
-      ";border-radius:999px;padding:.3rem .4rem;box-shadow:0 2px 10px rgba(0,0,0,.08);" +
-      "font-size:14px;line-height:1;max-width:100%}" +
-      ".wr a{display:inline-flex;align-items:center;gap:.3rem;text-decoration:none;color:inherit;" +
-      "padding:.35rem .55rem;border-radius:999px;transition:background .15s,color .15s}" +
+      ";border-radius:999px;padding:.28rem .35rem;box-shadow:" +
+      shadow +
+      ";font-size:13px;line-height:1;max-width:100%}" +
+      ".wr a{display:inline-flex;align-items:center;gap:.35rem;text-decoration:none;color:inherit;" +
+      "padding:.38rem .55rem;border-radius:999px;transition:background .15s ease,color .15s ease}" +
       ".wr a:hover{background:" +
-      (dark ? "#222934" : "#f3ede1") +
+      hoverBg +
       ";color:" +
-      accent +
+      fg +
       "}" +
-      ".wr .arrow{font-family:ui-monospace,monospace;font-weight:700}" +
-      ".wr .mid{font-weight:600;letter-spacing:-.01em;padding-inline:.2rem}" +
-      ".wr .mid b{color:" +
-      accent +
-      ";font-family:ui-monospace,monospace}" +
-      ".wr .dice{color:" +
+      ".wr .arrow{font-family:ui-monospace,'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.02em;color:" +
       muted +
       "}" +
-      ".wr svg{display:block}";
-
-    var ring =
-      '<svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true">' +
-      '<circle cx="50" cy="50" r="34" fill="none" stroke="' +
-      accent +
-      '" stroke-width="6" opacity=".4"/>' +
-      '<circle cx="50" cy="16" r="9" fill="' +
-      accent +
-      '"/><circle cx="79.4" cy="33" r="9" fill="' +
-      accent +
-      '"/>' +
-      '<circle cx="79.4" cy="67" r="9" fill="' +
-      accent +
-      '"/><circle cx="50" cy="84" r="9" fill="' +
-      accent +
-      '"/>' +
-      '<circle cx="20.6" cy="67" r="9" fill="' +
-      accent +
-      '"/><circle cx="20.6" cy="33" r="9" fill="' +
-      accent +
-      '"/></svg>";
+      ".wr .arrow:hover{color:" +
+      fg +
+      "}" +
+      ".wr .mid{font-weight:600;letter-spacing:-.01em;padding-inline:.15rem .25rem}" +
+      ".wr .mid b{font-family:ui-monospace,'JetBrains Mono',monospace;font-weight:700}" +
+      ".wr .dice{font-family:ui-monospace,monospace;font-size:13px;color:" +
+      muted +
+      "}" +
+      ".wr .dice:hover{color:" +
+      fg +
+      "}" +
+      ".wr .mark{display:block;flex-shrink:0;width:22px;height:22px;object-fit:contain}";
 
     var html =
       "<style>" +
@@ -134,7 +133,7 @@
       '" title="' +
       label +
       '" rel="noopener" target="_blank">' +
-      ring +
+      markImg() +
       "<span><b>613</b> Webring</span></a>" +
       '<a class="dice" href="' +
       hop("random") +
