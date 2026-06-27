@@ -72,7 +72,7 @@ footer. Pick one:
 ```html
 <!-- 613 Webring -->
 <div id="webring-613"></div>
-<script src="https://613webring.xyz/widget.js" defer></script>
+<script src="https://613-web-ring.vercel.app/widget.js" defer></script>
 ```
 
 **No-JavaScript alternative** (replace `https://your-site.com` with your URL):
@@ -80,11 +80,11 @@ footer. Pick one:
 ```html
 <!-- 613 Webring -->
 <nav class="webring-613" aria-label="613 Webring">
-  <a href="https://613webring.xyz/nav?dir=prev&site=https://your-site.com"
+  <a href="https://613-web-ring.vercel.app/nav?dir=prev&site=https://your-site.com"
     >← prev</a
   >
-  <a href="https://613webring.xyz">613 Webring</a>
-  <a href="https://613webring.xyz/nav?dir=next&site=https://your-site.com"
+  <a href="https://613-web-ring.vercel.app">613 Webring</a>
+  <a href="https://613-web-ring.vercel.app/nav?dir=next&site=https://your-site.com"
     >next →</a
   >
 </nav>
